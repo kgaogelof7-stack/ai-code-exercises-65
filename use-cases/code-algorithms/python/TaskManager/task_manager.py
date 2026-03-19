@@ -114,5 +114,12 @@ class TaskManager:
             "by_priority": priority_counts,
             "overdue": overdue_count,
             "completed_last_week": completed_recently
+            ## Exercise 2: Locating Specific Features (Algorithm Challenge)
+
+*   *Feature Found:* Task Retrieval (The "Show" command).
+*   *UI Location:* I found the command defined in cli.py.
+*   *Logic Location:* I found the actual algorithm in task_manager.py under the get_task function.
+*   *Algorithm Discovery:* I noticed that this function is the "brain" that takes the long ID I copied and searches the storage to pull out the right task.
+*
         }
 
