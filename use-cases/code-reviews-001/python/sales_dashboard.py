@@ -1,36 +1,36 @@
-def generate_sales_dashboard(sales_data, output_file='sales_dashboard.html', time_period='monthly', highlight_threshold=None):
+def generate_sales_dashboard(sales_data: str, output_file: str = 'sales_dashboard.html', time_period='monthly', highlight=None):
     """
-    Generate a sales dashboard from the provided data.
-
     Args:
-        sales_data: CSV file or DataFrame containing sales data
-        output_file: HTML file to save the dashboard
-        time_period: monthly or quarterly aggregation
-        highlight_threshold: threshold for highlighting values
+        sales_data (str or pd.DataFrame): Path to CSV or a DataFrame.
+        output_file (str): Output filename.
+        time_period (str): 'monthly' or 'quarterly'.
+        highlight (str): Specific region to highlight.
     """
-    import pandas as pd
-    import plotly.graph_objects as go
-    from plotly.subplots import make_subplots
     import os
+    import pandas as pd
 
-    # Load data
+    # 1. Load the data
     if isinstance(sales_data, str):
-        # Check if it's a CSV file
-        if sales_data.endswith('.csv'):
+        if not sales_data.endswith('.csv'):
+            raise ValueError("Unsupported file format. Only CSV files are supported.")
+        
+        if os.path.exists(sales_data):
             df = pd.read_csv(sales_data)
         else:
-            raise ValueError("Unsupported file format. Only CSV files are supported.")
+            print(f"Error: The file '{sales_data}' was not found.")
+            return
+
     elif isinstance(sales_data, pd.DataFrame):
         df = sales_data.copy()
+    
     else:
-        raise ValueError("sales_data must be a file path or a pandas DataFrame")
+        raise ValueError("sales_data must be a file path (str) or a pandas DataFrame.")
 
-    # Ensure required columns exist
+    # 2. Ensure required columns exist
     required_columns = ['date', 'product', 'region', 'sales_amount']
     for col in required_columns:
         if col not in df.columns:
             raise ValueError(f"Missing required column: {col}")
-
     # Convert date to datetime
     df['date'] = pd.to_datetime(df['date'])
 
