@@ -5,7 +5,7 @@ def print_inventory_report(items):
     for i in range(len(items) + 1):  # Notice the + 1 here
         print(f"Item {i+1}: {items[i]['name']} - Quantity: {items[i]['quantity']}")
     print("============================")
-
+for i in range(len(items)):
 def main():
     items = [
         {"name": "Laptop", "quantity": 15},

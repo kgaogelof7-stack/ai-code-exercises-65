@@ -1,1 +1,0 @@
-printh("hello, world")
