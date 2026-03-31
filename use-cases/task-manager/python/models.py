@@ -30,9 +30,14 @@ class Task:
         self.tags = tags or []
 
     def update(self, **kwargs):
+        """Refactored: Updates attributes and refreshes the timestamp."""
         for key, value in kwargs.items():
             if hasattr(self, key):
                 setattr(self, key, value)
+        
+        # This line ensures 'updated_at' changes every time you edit the task
+        self.updated_at = datetime.now()
+                
         self.updated_at = datetime.now()
 
     def mark_as_done(self):
