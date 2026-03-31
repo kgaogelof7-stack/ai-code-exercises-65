@@ -24,7 +24,34 @@ def merge_task_lists(local_tasks, remote_tasks):
     to_update_remote = {}
     to_create_local = {}
     to_update_local = {}
+    # 1. Combine all task IDs from both local and remote
+    all_task_ids = set(local_tasks.keys()) | set(remote_tasks.keys())
 
+    for task_id in all_task_ids:
+        local_task = local_tasks.get(task_id)
+        remote_task = remote_tasks.get(task_id)
+
+        if local_task and not remote_task:
+            # Task exists only locally -> Create on remote
+            merged_tasks[task_id] = local_task
+            to_create_remote.append(local_task)
+            
+        elif remote_task and not local_task:
+            # Task exists only on remote -> Create on local
+            merged_tasks[task_id] = remote_task
+            to_create_local.append(remote_task)
+            
+        elif local_task != remote_task:
+            # Conflict: exists in both but they are different
+            # Rule: Remote version wins (Conflict Resolution)
+            merged_tasks[task_id] = remote_task
+            to_update_local.append(remote_task)
+            
+        else:
+            # Both are identical
+            merged_tasks[task_id] = local_task
+
+    return merged_tasks, to_create_remote, to_update_remote, to_create_local, to_update_local
     # Step 1: Identify all unique task IDs across both sources
     all_task_ids = set(local_tasks.keys()) | set(remote_tasks.keys())
 
