@@ -4,18 +4,7 @@ import os
 from datetime import datetime
 from models import Task, TaskPriority, TaskStatus
 
-class TaskEncoder(json.JSONEncoder):
-    def default(self, obj):
-        if isinstance(obj, Task):
-            task_dict = obj.__dict__.copy()
-            task_dict['priority'] = obj.priority.value
-            task_dict['status'] = obj.status.value
-            # Convert datetime objects to ISO format strings
-            for key in ['created_at', 'updated_at', 'due_date', 'completed_at']:
-                if task_dict.get(key) is not None:
-                    task_dict[key] = task_dict[key].isoformat()
-            return task_dict
-        return super().default(obj)
+
 
 class TaskDecoder(json.JSONDecoder):
     def __init__(self, *args, **kwargs):
